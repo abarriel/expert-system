@@ -1,5 +1,0 @@
-B + !C => A
-
-=B # A is true
-
-?A

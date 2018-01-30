@@ -1,5 +1,0 @@
-(C|B)+A=>D # supposed to be False 
-(E^F)|G=>H # supposed to be True
-(I^J)+K=>L # supposed to be False
-=CEGIJ
-?DHL

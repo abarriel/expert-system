@@ -1,9 +1,0 @@
-# This is a comment.
-
-=A
-
-A => B
-
-?ABC
-
-B => C
