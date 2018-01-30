@@ -1,3 +1,7 @@
+tests
+.DS_Store
+meta
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -5,8 +9,6 @@ __pycache__/
 .vscode
 # C extensions
 *.so
-.DS_Store
-meta
 # Distribution / packaging
 .Python
 env/

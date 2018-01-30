@@ -1,0 +1,7 @@
+D ^ E => B
+B => !C
+B + C => A
+
+=E # A is true
+
+?A

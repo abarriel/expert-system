@@ -1,6 +1,7 @@
 # this is a comment$
 # all the required rules and symbols, along with the bonus ones, will be
 # shown here. spacing is not important
+
 C           => E        # C implies E
 A + B + C   => D        # A and B and C implies D
 A | B       => C        # A or B implies C
@@ -8,7 +9,7 @@ A + !B      => F        # A and not B implies F
 C | !G      => H        # C or not G implies H
 V ^ W       => X        # V xor W implies X
 A + B       => Y + Z    # A and B implies Y and Z
-C | D)     => X | V    # C or D implies X or V
+(C | D)     => X | V    # C or D implies X or V
 (((E + F)))       => !V       # E and F implies not V
 (A + B )     <=> C        # A and B if and only if C
 #A + B      <=> !C       # A and B if and only if not C
@@ -19,3 +20,130 @@ C | D)     => X | V    # C or D implies X or V
 # by a newline is used
 
 ?GVX                   # Queries : What are G, V and X ?
+
+{
+    [A]: 
+    [B]:
+    [C]:
+    [D]:
+    [E]:
+    [F]:
+    [G]:
+    [H]:
+    [I]:
+    [J]:
+    [K]:
+    [L]:
+    [M]:
+    [N]:
+    [O]:
+    [P]:
+    [Q]:
+    [R]:
+    [S]:
+    [T]:
+    [U]:
+    [V]:
+    [W]:
+    [X]:
+    [Y]:
+    [Z]:
+}
+
+
+A | B => C
+: 
+    A => C
+    B => C
+
+    [C]: {
+        or: [A,B]
+    }
+
+A + B => C
+:   
+    [C]: {
+        and: [[A, B]]
+    }
+
+A ^ B => C 
+:
+
+
+
+
+
+
+
+C => !B
+!A => B
+
+=C
+?A     
+
+
+[A]: {
+    value: undefined
+}
+[B]: {
+    value: undefined
+    implies: []
+    no: [C,A]
+}
+[C]: {
+    value: True,
+}
+
+
+
+
+C => !B
+!B => A
+
+=C
+?A     
+
+
+[A]: {
+    value: undefined
+}
+[B]: {
+    value: undefined
+    implies: []
+    no: [C,A]
+}
+[C]: {
+    value: True,
+}
+
+
+
+!A => B
+if A=False so !A=True so B=True
+if A=True so !A=False --
+[B]: {
+    value: undefined
+    implies: []
+    '!': [A]
+}
+
+!!A => B
+if A=False so !A=True so !!A=False --
+if A=True so !A=False so !!A=True so B=True
+[B]: {
+    value: undefined
+    implies: [A]
+}
+
+A => !B
+if A=False --
+if A=True so !B=True so B=False
+[B]: {
+    value: undefined
+    implies: []
+    no: [A]
+}
+
+!A => !B
+if A=False so !A=True so !B=True so B=False
+if A=True so !A=False --
