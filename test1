@@ -5,14 +5,14 @@
 C => E # C implies E
 A + B + C => D # A and B and C implies D
 !A + B => C # A or B implies C
-A + !B => F # A and not B implies F
-C | !G => (H + !D) # C or not G implies H
-B ^ !A => !D
-V ^ W => X # V xor W implies X
-A + B => Y + Z # A and B implies Y and Z
+(A) + ((!B)) => F # A and not B implies F
+C | (!(G)) => (H + !D) # C or not G implies H
+B ^ ((!A)) => !D
+(V ^ W) => X # V xor W implies X
+(((A + B )))=> Y + Z # A and B implies Y and Z
 #C | D => X | V # C or D implies X or V
 !E + (F ^ G) + D | !(A) => !V # E and F implies not V
-U <=> P
+#(U <=> P)
 C => E
 
 L + M | N => K
@@ -24,3 +24,4 @@ A => !(!B + C)
 	# by a newline is used
 
 ?GVXHD # Queries : What are G, V and X ?
+
