@@ -1,8 +1,8 @@
 # This is a comment.
 
 D => E
-!(D) => A + D | B + D | C + D
+E => A + D | B + D | C + D
 
-=
+=D
 
 ?ABCDE
