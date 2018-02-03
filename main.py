@@ -6,6 +6,41 @@ def setdic(dic, facts, val=True):
         for fact in facts:
             dic[fact]['value'] = val
 
+# def isfound():
+#     isfound = 0
+#     for letter, key in dic.items():
+#         for goal in goals:
+#             if letter == goal:
+#                 if key['value'] == None:
+#                     return None
+#                 if key['value'] == True or False:
+#                     isfound = letter
+#     if isfound != 0
+#         del goals[isfound]
+
+# remove item from goal one foiund
+
+
+def solve(rules, goals, dic): 
+    isfound(goals, dic)
+    for goal in goals:
+
+        for rule in rules:
+            if goal in rule[1]:
+                print (goal, rule[1])
+                found = 1 
+            elif rule[2] == 'ssi' and goal in rule[0]:
+                print (goal, rule[0])
+                found = 1
+            else:
+                found = 0
+        if found != 1:
+            for rule in rules:
+                if goal in rule[0]:
+                    found = 2
+                    print (goal, rule[0])
+
+                    
 def main():
     global args
     args = parseArg()
@@ -22,6 +57,7 @@ def main():
                 print(bc.GREEN, rule[0], '<=>', rule[1], bc.RES)
         printdic(dic)
         print('\n')
+    solve(rules, goals, dic)
 
 if __name__ == "__main__":
     main()
