@@ -15,3 +15,16 @@ class bc:
 def error(str, line = ''):
     print(bc.RED, str, line, bc.RES)
     sys.exit(1)
+class p:
+    green = lambda st: print(bc.GREEN, st, bc.RES)
+    blue = lambda st: print(bc.BLUE, st, bc.RES)
+    red = lambda st: print(bc.RED, st, bc.RES)
+
+def printdic(dic):
+    for letter, key in dic.items():
+        if key['value'] == True:
+            p.green('\t\t{}: True'.format(letter))
+        if key['value'] == None:
+            print('{}: None'.format(letter))
+        if key['value'] == False:
+            p.red('\t{}: False'.format(letter))
