@@ -22,6 +22,7 @@ class p:
 
 def printdic(dic):
     for letter, key in dic.items():
+        if l
         if key['value'] == True:
             p.green('\t\t{}: True'.format(letter))
         if key['value'] == None:

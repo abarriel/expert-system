@@ -21,6 +21,17 @@ def parseArg():
     parser.add_argument("-v", "--verbose", help="verbosity", action="store_true")
     return parser.parse_args()
 
+def bracket(rule, res = 0) :
+    for (idx, c) in enumerate(rule):
+        if c == '(':
+            res += 1
+        if c == ')':
+            res -= 1
+            if res < 0:
+                return -1
+        return bracket(rule[(idx + 1)::], res)
+    return res
+
 def parseFile(file):
     try:
         fileBrut = open(file, "r").read()
@@ -44,6 +55,10 @@ def parseFile(file):
             group = divideRule(rule, "=>") + ['!ssi']
         if resReg.group(2): # If and Only If `<=>` si et seulement si 
             group = divideRule(rule, "<=>") + ['ssi'] # ssi mean if and only if
+        if bracket(group[0]) or bracket(group[1]) == -1:
+            error('Wrong paranthesis', rule)
+    
+        # bracket(group[1])
         # parse should feet here
         rules[i] = group
     return facts, goals, rules, dic
