@@ -2,7 +2,6 @@
 import sys, re, argparse
 from tools import bc, dict_gen, error
 
-
 reSpaceandCom = ["[\r\t\f\v ]|\#.*", ""]
 reAvoidDuplicate = ["\n+", "\n"]
 
