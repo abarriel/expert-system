@@ -1,10 +1,7 @@
+#!/usr/bin/python3
 from parser import parseArg, parseFile
 from tools import bc, printdic
-
-def setdic(dic, facts, val=True):
-    for letter in dic:
-        for fact in facts:
-            dic[fact]['value'] = val
+import re
 
 # def isfound():
 #     isfound = 0
@@ -24,27 +21,48 @@ class Solver:
     def __init__(self, rules, goals, dic, args):
         self.rules = rules
         self.goals = goals
+        # self.stack = goals
         self.dic = dic   
         self.args = args
 
-    def cleanGoals(self):
-        self.goals = {k:v for (k,v) in self.goals.items() if self.dic[k]['value'] == None}
-    
-    def starter(self):
-        print(self.goals)
-        self.cleanGoals()
-        print(self.goals)
+    # def cleanGoals(self):
+        # self.goals = {k:v for (k,v) in self.goals.items() if self.dic[k]['value'] == None}
+        # print(self.goals)
+        # self.cleanGoals()
+# + = AND
+# | = OR
+# ! = NEG
+# ^ = XOR
+    # def loop(self):
+    def transformToBool(self, idx, side):
+        boolean = self.rules[idx][side]
+        for letter, key in self.dic.items():
+            letterTrim = '#' + letter + '#'
+            if re.search(letterTrim, boolean):
+                value = str(key['value'])
+                boolean = boolean.replace(letterTrim, value)
+        return boolean
 
-# def solve(rules, goals, dic):
-#     print(goals);
-#     cleanGoals();
-#     print(goals);
-#     # for goal in goals:
-#         # isfound = found(goal, dic, remove = False)
-#         # print(isfound)
-#     # print(g)
-#     # print(goals)
-#     # for goal in goals:
+    def to_bool(self, value):
+        if str(value).lower() in ("yes", "y", "true",  "t", "1"): return True
+        if str(value).lower() in ("no",  "n", "false", "f", "0", "0.0", "", "none", "[]", "{}"): return False
+
+    def solver(self):
+    # for goal in goals:
+    #     goals.pop(d)
+    #     isfound = found(goal, dic, remove = False)
+    #     print(isfound)
+        for idx, rule in enumerate(self.rules):
+            print(idx);
+            boolLeft = self.transformToBool(idx, 0)
+            print(self.to_bool(boolLeft))
+
+            # boolRight = self.transformToBool(idx, 1)
+            # print(bool(True ^ True))
+        # for goal,i in list(self.goals.items()):
+        #     print(goal, i)
+            # self.goals[goal] = False
+        # print(self.goals)
 #     #     for rule in rules:
 #     #         if goal in rule[1]:
 #     #             print (goal, rule[1])
@@ -63,21 +81,28 @@ class Solver:
 def main():
     global args, facts, goals, rules, dic
     args = parseArg()
-    facts, goals, rules, dic = parseFile(args.filename)
-    setdic(dic, facts)
+    facts, goals, rules, dic = parseFile(args.filename, args.default)
 
+    print(goals)
     if args.verbose:
         print(bc.GREEN + 'Facts:', list(facts.keys()), bc.RES, "\n")
         print(bc.BLUE + 'Goals:', list(goals.keys()), bc.RES, "\n")
+        printdic(dic)
         for rule in rules:
             if rule[2] == '!ssi':
                 print(bc.YELLOW, rule[0], '=>', rule[1], bc.RES)
             if rule[2] == 'ssi':
                 print(bc.GREEN, rule[0], '<=>', rule[1], bc.RES)
-        printdic(dic)
         print('\n')
     solve = Solver(rules, goals, dic, args)
-    solve.starter()
+    solve.solver()
+    if args.verbose:
+        for rule in rules:
+            if rule[2] == '!ssi':
+                print(bc.YELLOW, rule[0], '=>', rule[1], bc.RES)
+            if rule[2] == 'ssi':
+                print(bc.GREEN, rule[0], '<=>', rule[1], bc.RES)
+        print('\n')
 
 if __name__ == "__main__":
     main()

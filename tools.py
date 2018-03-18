@@ -1,8 +1,8 @@
 import sys
 
-def dict_gen(k):
-    yield chr(k + 65)
-    yield { 'value': None }
+def dict_gen(k, default):
+    yield k
+    yield { 'value': default }
 
 class bc:
     BLUE = '\033[1;96m'
@@ -23,8 +23,9 @@ class p:
 def printdic(dic):
     for letter, key in dic.items():
         if key['value'] == True:
-            p.green('\t\t{}: True'.format(letter))
+            p.green('{}: True'.format(letter))
         if key['value'] == None:
             print('{}: None'.format(letter))
         if key['value'] == False:
-            p.red('\t{}: False'.format(letter))
+            p.red('{}: False'.format(letter))
+    print("\n")

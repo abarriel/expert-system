@@ -14,10 +14,16 @@ divideRule = lambda rule, operator: list(re.match(r"(.*)" + re.escape(operator) 
 getGoals = lambda file: listToDict((filterFirstChar(file, '?')[1:]), False)
 getFacts = lambda file: listToDict((filterFirstChar(file, '=')[1:]), True)
 
+def setdic(dic, facts, val=True):
+    for letter in dic:
+        for fact in facts:
+            dic[fact]['value'] = val
+
 def parseArg(): 
     parser = argparse.ArgumentParser()
     parser.add_argument('filename')
     parser.add_argument("-v", "--verbose", help="verbosity", action="store_true")
+    parser.add_argument("-d", "--default", help="Set uninitialized to False", action="store_false", default=None)
     return parser.parse_args()
 
 def bracket(rule, res = 0) :
@@ -31,7 +37,7 @@ def bracket(rule, res = 0) :
         return bracket(rule[(idx + 1)::], res)
     return res
 
-def parseFile(file):
+def parseFile(file, default):
     try:
         fileBrut = open(file, "r").read()
     except:
@@ -41,8 +47,9 @@ def parseFile(file):
         goals = getGoals(file)
         facts = getFacts(file)
         rules = file[:-2]
-        dic = dict(map(dict_gen, range(26)))
-    except: 
+        dic = {}
+        # dic = dict(map(lambda k: dict_gen(k, default), range(26)))
+    except:
         error("Failed to parse file")
     if not goals:
         error("No Goals Providen")
@@ -56,8 +63,26 @@ def parseFile(file):
             group = divideRule(rule, "<=>") + ['ssi'] # ssi mean if and only if
         if bracket(group[0]) or bracket(group[1]) == -1:
             error('Wrong paranthesis', rule)
-    
-        # bracket(group[1])
-        # parse should feet here
+        s = group[0] + '^' + group[1]
+        for v in re.split(r'[\^\|\+]', s.replace('(', '').replace(')', '').replace('!', '')):
+            if (v):
+                dic[v] = { 'value': default }
+            else:
+                error("Wrong rules provided at", line = rule)
+            match = group[0].find(v)
+            # print(v, group[0], group[1])
+            # print(group[0].replace(v, '#' + v +'#'))
+            if not re.search(r'[A-Z0-9]#[A-Z0-9]',  group[0].replace(v, '#' + v +'#')):
+                group[0] = group[0].replace(v, '#' + v +'#');
+            if not re.search(r'[A-Z0-9]#[A-Z0-9]',  group[1].replace(v, '#' + v +'#')):
+                group[1] = group[1].replace(v, '#' + v +'#');
+        if re.search(r"and|or|not|False|True", group[0]) or re.search(r"and|or|not", group[1]):
+            error("Wrong name of input", line = rule)
+        group[0] = group[0].replace('|', ' or ').replace('+', ' and ').replace('!', ' not ')
+        group[1] = group[1].replace('|', ' or ').replace('+', ' and ').replace('!', ' not ')
         rules[i] = group
+    try:
+        setdic(dic, facts)
+    except:
+        error('Goal is useless')
     return facts, goals, rules, dic

@@ -1,9 +1,0 @@
-D ^ E => B
-B => !C
-B + C <=> A
-
-=E 
-
-?A
-
-# A est false
