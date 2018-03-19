@@ -37,6 +37,15 @@ def bracket(rule, res = 0) :
         return bracket(rule[(idx + 1)::], res)
     return res
 
+def addHashtag(st, v):
+    st = ' ' + st + ' '
+    clean = st.replace("+", " + ").replace("^", " ^ ").replace("|", " | ").replace('(', ' ( ').replace(')', ' ) ').replace('!', ' ! ')
+    vhast = '#' + v + '#'
+    if st.find(vhast) < 0 :
+        vspace = ' ' + v + ' '
+        st = clean.replace(vspace, '#' + v + '#')
+        st = "".join(st.split())
+    return st
 def parseFile(file, default):
     try:
         fileBrut = open(file, "r").read()
@@ -69,17 +78,12 @@ def parseFile(file, default):
                 dic[v] = { 'value': default }
             else:
                 error("Wrong rules provided at", line = rule)
-            match = group[0].find(v)
-            # print(v, group[0], group[1])
-            # print(group[0].replace(v, '#' + v +'#'))
-            if not re.search(r'[A-Z0-9]#[A-Z0-9]',  group[0].replace(v, '#' + v +'#')):
-                group[0] = group[0].replace(v, '#' + v +'#');
-            if not re.search(r'[A-Z0-9]#[A-Z0-9]',  group[1].replace(v, '#' + v +'#')):
-                group[1] = group[1].replace(v, '#' + v +'#');
+            group[1] = addHashtag(group[1], v)
+            group[0] = addHashtag(group[0], v)
         if re.search(r"and|or|not|False|True", group[0]) or re.search(r"and|or|not", group[1]):
             error("Wrong name of input", line = rule)
-        group[0] = group[0].replace('|', ' or ').replace('+', ' and ').replace('!', ' not ')
-        group[1] = group[1].replace('|', ' or ').replace('+', ' and ').replace('!', ' not ')
+        group.append(group[0].replace('|', ' or ').replace('+', ' and ').replace('!', ' not '))
+        group.append(group[1].replace('|', ' or ').replace('+', ' and ').replace('!', ' not '))
         rules[i] = group
     try:
         setdic(dic, facts)

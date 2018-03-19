@@ -8,6 +8,8 @@ class bc:
     BLUE = '\033[1;96m'
     GREEN = '\033[1;92m'
     YELLOW = '\033[1;93m'
+    MAGENTA = '\033[1;95m'
+    CYAN = '\033[1;96m'
     RED = '\033[1;91m'
     RES = '\033[0m'
     BOLD = '\033[1m'
@@ -15,6 +17,7 @@ class bc:
 def error(str, line = ''):
     print(bc.RED, str, line, bc.RES)
     sys.exit(1)
+
 class p:
     green = lambda st: print(bc.GREEN, st, bc.RES)
     blue = lambda st: print(bc.BLUE, st, bc.RES)
@@ -28,4 +31,8 @@ def printdic(dic):
             print('{}: None'.format(letter))
         if key['value'] == False:
             p.red('{}: False'.format(letter))
-    print("\n")
+    print("")
+
+def clean(str):
+    # return str.replace('#', '')
+    return str
